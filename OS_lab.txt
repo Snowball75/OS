@@ -1,0 +1,672 @@
+# FCFS scheduling algorithm
+
+n = int(input("Enter the number of processes: "))
+p = []
+for i in range(n):
+    at = int(input("Enter the arrival time of process " + str(i + 1) + ": "))
+    bt = int(input("Enter the burst time of process " + str(i + 1) + ": "))
+    p.append([at, bt])
+
+p.sort(key=lambda x: x[0])
+
+et = []
+for i in range(len(p)):
+    if i == 0:
+        et.append(p[i][1])
+    else:
+        et.append(et[i - 1] + p[i][1])
+
+tat = []
+for i in range(len(p)):
+    tat.append(et[i] - p[i][0])
+
+wt = []
+for i in range(len(p)):
+    wt.append(tat[i] - p[i][1])
+print("Average Waiting Time: ",sum(wt) / n)
+
+
+output:
+
+Enter the number of processes: 4
+Enter the arrival time of process 1: 3
+Enter the burst time of process 1: 6
+Enter the arrival time of process 2: 0
+Enter the burst time of process 2: 5
+Enter the arrival time of process 3: 2
+Enter the burst time of process 3: 8
+Enter the arrival time of process 4: 1
+Enter the burst time of process 4: 3
+Average Waiting Time:  5.75
+
+
+
+
+
+
+#sjf non preemptive
+
+n = int(input("Enter the value of n:"))
+p=[]
+for i in range(n):
+    pr=input("Enter pid : ")
+    bt=int(input("Enter burst time : "))
+    p.append([pr,bt])
+print(p)
+p.sort(key=lambda x:x[1])
+print("sorted order of list is ",p)
+et=[]
+c=0
+for i in range(n):
+    c+=p[i][1]
+    et.append(c)
+wt=[]
+for i in range(n):
+    if i==0:
+        wt.append(0)
+    else:
+        wt.append(et[i-1])
+wtsum=0
+for i in range(n):
+    wtsum+=wt[i]
+print("avg wt",wtsum/n)
+
+output:
+
+Enter the value of n:4
+Enter pid : p1
+Enter burst time : 6
+Enter pid : p2
+Enter burst time : 8
+Enter pid : p3
+Enter burst time : 7
+Enter pid : p4
+Enter burst time : 3
+[['p1', 6], ['p2', 8], ['p3', 7], ['p4', 3]]
+sorted order of list is  [['p4', 3], ['p1', 6], ['p3', 7], ['p2', 8]]
+avg wt 7.0
+
+
+
+
+//Sjf preemptive [Java]
+
+
+
+import java.util.*;
+class SJF
+{
+ public static void main(String args[])
+{
+  Scanner sc=new Scanner(System.in);
+  System.out.println("Enter no.of processes: ");
+int n=sc.nextInt();
+int pid[] = new int[n];
+int at[] = new int[n];
+int bt[] = new int[n];
+int ct[] = new int[n];
+int ta[] = new int[n];
+int wt[] = new int[n];
+int f[] = new int[n];
+int st=0,tot=0;
+float avgwt=0,avgta=0;
+for(int i=0;i<n;i++)
+{
+ System.out.println("enter "+(i+1)+" at");
+ at[i]=sc.nextInt();
+ System.out.println("enter "+(i+1)+" bt");
+ bt[i]=sc.nextInt();
+pid[i]=i+1;
+f[i]=0;
+}
+while(true)
+{
+int c=n,min=999;
+if(tot==n)
+break;
+for(int i=0;i<n;i++)
+{
+if((at[i]<=st && (f[i]==0) && bt[i]<=min))
+{
+ min=bt[i];
+ c=i;
+}
+}
+if(c==n)
+st++;
+else
+{
+ct[c]=st +bt[c];
+st += bt[c];
+ta[c]=ct[c] - at[c];
+wt[c]=ta[c] - bt[c];
+f[c]=1;
+tot++;
+}
+}
+for(int i=0;i<n;i++)
+{
+avgwt+=wt[i];
+avgta+=ta[i];
+}
+System.out.println("\nAvg tat is : "+(float)(avgta/n));
+System.out.println("\nAvg wt is : "+(float)(avgwt/n));
+}
+}
+
+output:
+
+Enter no.of processes:
+4
+enter 1 at
+2
+enter 1 bt
+3
+enter 2 at
+1
+enter 2 bt
+2
+enter 3 at
+3
+enter 3 bt
+4
+enter 4 at
+5
+enter 4 bt
+6
+
+Avg tat is : 6.0
+
+Avg wt is : 2.25
+
+
+
+#priority non preemptive
+
+def priorNP():
+    n = int(input("Enter the no.of processes: "))
+
+    p = []
+    for i in range(n):
+        p1 = {}
+        p1["name"] = input(f"Enter the name of process {i+1}: ")
+        p1["priority"] = int(input(f"Enter the priority of process {i+1}: "))
+        p1["bt"] = int(input(f"Enter the burst time of process {i+1}: "))
+        p.append(p1)
+    p = sorted(p, key=lambda x: x["priority"])
+    wt = [0]
+    tat = [p[0]["bt"]]
+
+    for i in range(1,n):
+        wt.append(wt[i-1] + p[i-1]["bt"])
+        tat.append(wt[i] + p[i]["bt"])
+    print("\nAverage Waiting Time:", sum(wt) /n)
+    print("Average Turnaround Time:", sum(tat) /n)
+priorNP()
+
+output:
+
+Enter the no.of processes: 3
+Enter the name of process 1: p1
+Enter the priority of process 1: 1
+Enter the burst time of process 1: 10
+Enter the name of process 2: p2
+Enter the priority of process 2: 3
+Enter the burst time of process 2: 8
+Enter the name of process 3: p3
+Enter the priority of process 3: 2
+Enter the burst time of process 3: 5
+
+Average Waiting Time: 8.333333333333334
+Average Turnaround Time: 16.0'''
+
+
+
+
+#priority premp
+n = int(input("Enter the no.of processes: "))
+
+arrival = []
+burst = []
+priority = []
+
+print("Enter the arrival times:")
+for i in range(n):
+    time = int(input(f"Arrival time for process {i + 1}: "))
+    arrival.append(time)
+
+print("Enter the burst times:")
+for i in range(n):
+    time = int(input(f"Burst time for process {i + 1}: "))
+    burst.append(time)
+
+print("Enter the priorities:")
+for i in range(n):
+    p = int(input(f"Priority for process {i + 1}: "))
+    priority.append(p)
+
+x = [burst[i] for i in range(n)]
+wt = [0] * n
+tat = [0] * n
+ct = [0] * n
+
+smallest = 0
+C = 0
+S = 0
+time = 0
+end = 0
+
+while C != n:
+    smallest = -1
+
+    for i in range(n):
+        if arrival[i] <= time and (smallest == -1 or priority[i] < priority[smallest]) and burst[i] > 0:
+            smallest = i
+
+    if smallest == -1:
+        time += 1
+    else:
+        burst[smallest] -= 1
+
+        if burst[smallest] == 0:
+            end = time + 1
+            ct[smallest] = end
+            wt[smallest] = end - arrival[smallest] - x[smallest]
+            tat[smallest] = end - arrival[smallest]
+            C += 1
+
+        time += 1
+
+print("Total Turnaround Time:", sum(tat)/n)
+print("Total Waiting Time:",sum(wt)/n)
+
+output:
+
+
+Enter the number of processes: 5
+Enter the arrival times:
+Arrival time for process 1: 0
+Arrival time for process 2: 0
+Arrival time for process 3: 6
+Arrival time for process 4: 11
+Arrival time for process 5: 12
+Enter the burst times:
+Burst time for process 1: 4
+Burst time for process 2: 3
+Burst time for process 3: 7
+Burst time for process 4: 4
+Burst time for process 5: 2
+Enter the priorities:
+Priority for process 1: 1
+Priority for process 2: 2
+Priority for process 3: 1
+Priority for process 4: 3
+Priority for process 5: 2
+Total Turnaround Time: 7.6
+Total Waiting Time: 3.6'''
+
+
+
+
+
+#round robin non preemptive             
+        
+import pandas as pd
+
+n = int(input("Enter the number of processes: "))
+
+p = []
+bt = []
+
+for i in range(n):
+    p1 = input("Enter process ID: ")
+    p.append(p1)
+    bt1 = int(input("Enter burst time: "))
+    bt.append(bt1)
+
+q = int(input("Enter time slice: "))
+
+d = {"pid": pd.Series(p), "Burst time": pd.Series(bt)}
+df = pd.DataFrame(d)
+
+bt2 = list(df["Burst time"])
+rt = list(df["Burst time"])
+
+t = 0
+wt = [0]
+
+while True:
+    s = True
+
+    for i in range(n):
+        if rt[i] > 0:
+            s = False
+
+            if rt[i] > q:
+                t += q
+                rt[i] -= q
+            else:
+                t += rt[i]
+                v = t - bt2[i]
+                wt.append(v)
+                rt[i] = 0
+
+    if s:
+        break
+
+tat = []
+
+for i in range(n):
+    u = wt[i] + bt2[i]
+    tat.append(u)
+
+print("Avg waiting time:", sum(wt)/ n)
+print("Avg turnaround time:", sum(tat)/ n)
+
+output:
+
+Enter the number of processes: 3
+Enter process ID: p1
+Enter burst time: 4
+Enter process ID: p2
+Enter burst time: 3
+Enter process ID: p3
+Enter burst time: 5
+Enter time slice: 2
+Avg waiting time: 5.666666666666667
+Avg turnaround time: 7.333333333333333
+
+
+
+
+#round robin preemptive
+import pandas as pd
+
+n = int(input("Enter the number of processes: "))
+
+p = []
+at = []
+bt = []
+
+for i in range(n):
+    p1 = input("Enter process ID: ")
+    p.append(p1)
+    at1 = int(input("Enter arrival time: "))
+    at.append(at1)
+    bt1 = int(input("Enter burst time: "))
+    bt.append(bt1)
+
+q = int(input("Enter time quantum: "))
+
+d = {"pid": pd.Series(p), "Arrival time": pd.Series(at), "Burst time": pd.Series(bt)}
+df = pd.DataFrame(d)
+
+bt2 = list(df["Burst time"])
+rt = list(df["Burst time"])
+at = list(df["Arrival time"])
+
+t = 0
+wt = [0] * n
+tat = [0] * n
+
+while True:
+    done = True
+
+    for i in range(n):
+        if rt[i] > 0:
+            done = False
+
+            if rt[i] > q:
+                t += q
+                rt[i] -= q
+            else:
+                t += rt[i]
+                wt[i] = t - bt2[i] - at[i]
+                tat[i] = t - at[i]
+                rt[i] = 0
+    if done:
+        break
+print("Average Waiting Time:", sum(wt) / n)
+print("Average Turnaround Time:", sum(tat) / n)
+
+output:
+
+Enter the number of processes: 5
+Enter process ID: p1
+Enter arrival time: 0
+Enter burst time: 5
+Enter process ID: p2
+Enter arrival time: 1
+Enter burst time: 3
+Enter process ID: p3
+Enter arrival time: 2
+Enter burst time: 1
+Enter process ID: p4
+Enter arrival time: 3
+Enter burst time: 2
+Enter process ID: p5
+Enter arrival time: 4
+Enter burst time: 3
+Enter time quantum: 2
+Average Waiting Time: 5.8
+Average Turnaround Time: 8.6'''
+
+
+
+
+
+#producer consumer problem
+
+import threading
+import time
+mutex=threading.Lock()
+full=0
+empty=0
+x=0
+def producer():
+    global mutex,full,empty,x
+    mutex.acquire()
+    if full<10:
+        full+=1
+        empty-=1
+        x+=1
+        print("Producer produces item ",x)
+    else:
+        print("Buffer is full")
+    mutex.release()
+
+def consumer():
+    global mutex,full,empty,x
+    mutex.acquire()
+    if full > 0:
+        full-=1
+        empty+=1
+        print("consumer consumes item ",x)
+        x-=1
+    else:
+        print("Buffer is empty")
+    mutex.release()
+if __name__== "__main__":
+    while True:
+        print("1.Press 1 for producer")
+        print("2.Press 2 for consumer")
+        print("3.Press 3 for exit")
+        n=int(input("Enter choice : "))
+        if n==1:
+            producer()
+        elif n==2:
+            consumer()
+        elif n==3:
+            break
+        else:
+            print("Invalid")
+
+output:
+
+1.Press 1 for producer
+2.Press 2 for consumer
+3.Press 3 for exit
+Enter choice : 1
+Producer produces item  1
+1.Press 1 for producer
+2.Press 2 for consumer
+3.Press 3 for exit
+Enter choice : 1
+Producer produces item  2
+1.Press 1 for producer
+2.Press 2 for consumer
+3.Press 3 for exit
+Enter choice : 2
+consumer consumes item  2
+1.Press 1 for producer
+2.Press 2 for consumer
+3.Press 3 for exit
+Enter choice : 3
+
+
+
+#bankers algorithm for deadlock avoidance
+
+
+n = int(input("Enter no. of processes: "))
+m = int(input("Enter no. of resources: "))
+
+alloc = []
+maxi = []
+avail = []
+
+print("Enter Allocation matrix: ")
+for i in range(n):
+    row = list(map(int, input().split()))
+    alloc.append(row)
+
+print("Enter Maximum matrix: ")
+for i in range(n):
+    row = list(map(int, input().split()))
+    maxi.append(row)
+
+print("Enter available resources: ")
+avail = list(map(int, input().split()))
+
+ans = []
+need = [[maxi[i][j] - alloc[i][j] for j in range(m)] for i in range(n)]
+f = [0] * n
+
+for _ in range(n):
+    for i in range(n):
+        if f[i] == 0 and all(need[i][j] <= avail[j] for j in range(m)):
+            ans.append(i)
+            for y in range(m):
+                avail[y] += alloc[i][y]
+            f[i] = 1
+
+print("Following is the safe sequence:")
+print("P", "->P".join(map(str, ans)), sep="")
+
+output:
+
+Enter no. of processes: 5
+Enter no. of resources: 3
+Enter Allocation matrix: 
+0 1 0
+2 0 0
+3 0 2
+2 1 1
+0 0 2
+Enter Maximum matrix: 
+7 5 3
+3 2 2
+9 0 2
+2 2 2
+4 3 3
+Enter available resources: 
+3 3 2
+Following is the safe sequence:
+P1->P3->P4->P0->P2
+
+#bankers algorithm for deadlock detection
+
+
+def is_safe_state(alloc, maxi, avail):
+    n = len(alloc)
+    m = len(avail)
+
+    need = [[maxi[i][j] - alloc[i][j] for j in range(m)] for i in range(n)]
+    f = [0] * n
+    work = avail.copy()
+    safe_sequence = []
+
+    while True:
+        found = False
+        for i in range(n):
+            if f[i] == 0 and all(need[i][j] <= work[j] for j in range(m)):
+                work = [work[j] + alloc[i][j] for j in range(m)]
+                f[i] = 1
+                safe_sequence.append(i)
+                found = True
+
+        if not found:
+            break
+
+    return all(f[i] == 1 for i in range(n)), safe_sequence
+
+n = int(input("Enter no. of processes: "))
+m = int(input("Enter no. of resources: "))
+
+alloc = []
+maxi = []
+avail = []
+
+print("Enter Allocation matrix: ")
+for i in range(n):
+    row = list(map(int, input().split()))
+    alloc.append(row)
+
+print("Enter Maximum matrix: ")
+for i in range(n):
+    row = list(map(int, input().split()))
+    maxi.append(row)
+
+print("Enter available resources: ")
+avail = list(map(int, input().split()))
+
+is_safe, sequence = is_safe_state(alloc, maxi, avail)
+
+if is_safe:
+    print("The system is in a safe state.")
+    print("Safe sequence:", "->".join(map(str, sequence)))
+else:
+    print("The system is in an unsafe state. Deadlock is detected.")
+
+output:
+
+Enter no. of processes: 3
+Enter no. of resources: 3
+Enter Allocation matrix: 
+3 3 3
+2 0 3
+1 2 4
+Enter Maximum matrix: 
+3 6 8
+4 3 3
+3 4 4
+Enter available resources: 
+1 2 0
+The system is in an unsafe state. Deadlock is detected.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
