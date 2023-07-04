@@ -1,0 +1,165 @@
+FCFS
+top=0
+a_tat=0
+a_wt=0
+at=[]
+bt=[]
+n=int(input("enter no of process:"))
+for i in range(n):
+    a=int(input("p%d arrival time:" %(i+1)))
+    at.append(a)
+    a=int(input("p%d burst time:" %(i+1)))
+    bt.append(a)
+ct=[]
+tat=[]
+wt=[]
+print()
+for i in range(n):
+    if i==0:
+        top=top+bt[i]
+        ct.append(top)
+    elif i>0:
+        if top<at[i]:
+            top=at[i]+bt[i]
+            ct.append(top)
+        else:
+            top=top+bt[i]
+            ct.append(top)
+for i in range(n):
+    var=ct[i]-at[i]
+    tat.append(var)
+    var=tat[i]-bt[i]
+    wt.append(var)
+print()
+print("p_id"+"\t"+"at"+"\t"+"bt"+"\t"+"ct"+"\t"+"tat"+"\t"+"wt"+"\t")
+for i in range(n):
+    print(str((i+1))+"\t"+str(at[i])+"\t"+str(bt[i])+"\t"+str(ct[i])+"\t"+str(tat[i])+"\t"+str(wt[i])+"\t")
+    a_tat=sum(tat)/n
+    a_wt=sum(wt)/n
+print("atat:%d" %a_wt)
+print("awt:%d" %a_tat)
+------------------------------------------------------ROUND ROBIN
+def round_robin(processes, quantum):
+    n = len(processes)
+    waiting_time = [0] * n
+    turnaround_time = [0] * n
+    remaining_burst_time = [0] * n
+    for i in range(n):
+        remaining_burst_time[i] = processes[i][1]
+    time = 0
+    while True:
+        done = True
+        for i in range(n):
+            if remaining_burst_time[i] > 0:
+                done = False
+                if remaining_burst_time[i] > quantum:
+                    time += quantum
+                    remaining_burst_time[i] -= quantum
+                else:
+                    time += remaining_burst_time[i]
+                    waiting_time[i] = time - processes[i][1]
+                    remaining_burst_time[i] = 0
+
+        if done:
+            break
+
+    for i in range(n):
+        turnaround_time[i] = processes[i][1] + waiting_time[i]
+
+    print("Process\tBurst Time\tWaiting Time\tTurnaround Time")
+    total_waiting_time = 0
+    total_turnaround_time = 0
+    for i in range(n):
+        total_waiting_time += waiting_time[i]
+        total_turnaround_time += turnaround_time[i]
+        print(f"{processes[i][0]}\t\t{processes[i][1]}\t\t{waiting_time[i]}\t\t{turnaround_time[i]}")
+
+    average_waiting_time = total_waiting_time / n
+    average_turnaround_time = total_turnaround_time / n
+    print(f"\nAverage Waiting Time: {average_waiting_time}")
+    print(f"Average Turnaround Time: {average_turnaround_time}")
+
+
+# Example usage
+processes = [("P1", 10), ("P2", 5), ("P3", 8)]
+quantum_time = 2
+round_robin(processes, quantum_time)
+------------------------------------------------------DEAD LOCK DETECTION
+class BankersAlgorithm:
+    def __init__(self, allocation, max_need, available):
+        self.allocation = allocation
+        self.max_need = max_need
+        self.available = available
+        self.num_processes = len(allocation)
+        self.num_resources = len(available)
+        self.need = self.calculate_need()
+    def calculate_need(self):
+        need = []
+        for i in range(self.num_processes):
+            row = []
+            for j in range(self.num_resources):
+                row.append(self.max_need[i][j] - self.allocation[i][j])
+            need.append(row)
+        return need
+    def is_safe_state(self, process_sequence):
+        work = self.available[:]
+        finish = [False] * self.num_processes
+
+        for i in process_sequence:
+            if not finish[i] and all(need <= work for need, work in zip(self.need[i], work)):
+                work = [work[j] + self.allocation[i][j] for j in range(self.num_resources)]
+                finish[i] = True
+        return all(finish)
+    def find_safe_sequence(self):
+        process_sequence = []
+        work = self.available[:]
+        finish = [False] * self.num_processes
+        while True:
+            found = False
+            for i in range(self.num_processes):
+                if not finish[i] and all(need <= work for need, work in zip(self.need[i], work)):
+                    work = [work[j] + self.allocation[i][j] for j in range(self.num_resources)]
+                    finish[i] = True
+                    process_sequence.append(i)
+                    found = True
+            if not found:
+                break
+        if all(finish):
+            return process_sequence
+        else:
+            return None
+# Example usage
+allocation = [[0, 1, 0], [2, 0, 0], [3, 0, 2], [2, 1, 1], [0, 0, 2]]
+max_need = [[7, 5, 3], [3, 2, 2], [9, 0, 2], [2, 2, 2], [4, 3, 3]]
+available = [3, 3, 2]
+banker = BankersAlgorithm(allocation, max_need, available)
+safe_sequence = banker.find_safe_sequence() 
+if safe_sequence:
+    print("Safe sequence:", safe_sequence)
+    if banker.is_safe_state(safe_sequence):
+        print("Safe state.")
+    else:
+        print("Unsafe state.")
+else:
+    print("No safe sequence found.")
+----------------------------------------------------
+PRIORITY NON PREEMPTIVE
+def priority_non_preemptive():
+    n=int(input("enter the no processes:"))
+    p=[]
+    for i in range(n):
+        p1={}
+        p1["name"]=int(input(f"enter the name of processes {i+1}:"))
+        p1["priority"]=int(input(f"enter priority process {i+1}:"))
+        p1["bt"]=int(input(f"enter burst time {i+1}:"))
+        p.append(p1)
+    p=sorted(p,key=lambda x: x["priority"])
+    wt=[0]
+    tat=[p[0]["bt"]]
+    for i in range(1,n):
+        wt.append(wt[i-1]+p[i-1]["bt"])
+        tat.append(wt[i]+p[i]["bt"])
+    print("a_wt", sum(wt)/n)
+    print("a_tat",sum(tat)/n)
+priority_non_preemptive()    
+                       
