@@ -31,9 +31,10 @@ void consumer(){
     		break;
     	wait(&full);
     	wait(&S);
+        count--;
         printf("Element consumed is: %d\n",buffer[count]);
         p=buffer[count];
-        count--;
+
         signal(&S);
     	signal(&empty);
     }
