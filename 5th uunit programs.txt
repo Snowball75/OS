@@ -1,0 +1,213 @@
+User-defined class objects in Java ArrayList
+class Student{  
+  int rollno;  
+  String name;  
+  int age;  
+  Student(int rollno,String name,int age){  
+   this.rollno=rollno;  
+   this.name=name;  
+   this.age=age;  
+  }  
+}  
+
+import java.util.*;  
+ class ArrayList5{  
+ public static void main(String args[]){  
+  //Creating user-defined class objects  
+  Student s1=new Student(101,"Sonoo",23);  
+  Student s2=new Student(102,"Ravi",21);  
+  Student s2=new Student(103,"Hanumat",25);  
+  //creating arraylist  
+  ArrayList<Student> al=new ArrayList<Student>();  
+  al.add(s1);//adding Student class object  
+  al.add(s2);  
+  al.add(s3);  
+  //Getting Iterator  
+  Iterator itr=al.iterator();  
+  //traversing elements of ArrayList object  
+  while(itr.hasNext()){  
+    Student st=(Student)itr.next();  
+    System.out.println(st.rollno+" "+st.name+" "+st.age);  
+  }  
+ }  
+}  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java LinkedList Example: Book
+import java.util.*;  
+class Book {  
+int id;  
+String name,author,publisher;  
+int quantity;  
+public Book(int id, String name, String author, String publisher, int quantity) {  
+    this.id = id;  
+    this.name = name;  
+    this.author = author;  
+    this.publisher = publisher;  
+    this.quantity = quantity;  
+}  
+}  
+ class LinkedListExample {  
+public static void main(String[] args) {  
+    //Creating list of Books  
+    List<Book> list=new LinkedList<Book>();  
+    //Creating Books  
+    Book b1=new Book(101,"Let us C","Yashwant Kanetkar","BPB",8);  
+    Book b2=new Book(102,"Data Communications & Networking","Forouzan","Mc Graw Hill",4);  
+    Book b3=new Book(103,"Operating System","Galvin","Wiley",6);  
+    //Adding Books to list  
+    list.add(b1);  
+    list.add(b2);  
+    list.add(b3);  
+    //Traversing list  
+    for(Book b:list){  
+    System.out.println(b.id+" "+b.name+" "+b.author+" "+b.publisher+" "+b.quantity);  
+    }  
+}  
+}  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java HashSet Example: Book
+Let's see a HashSet example where we are adding books to set and printing all the books.
+import java.util.*;  
+class Book {  
+int id;  
+String name,author,publisher;  
+int quantity;  
+public Book(int id, String name, String author, String publisher, int quantity) {  
+    this.id = id;  
+    this.name = name;  
+    this.author = author;  
+    this.publisher = publisher;  
+    this.quantity = quantity;  
+}  
+}  
+ class HashSetExample {  
+public static void main(String[] args) {  
+    HashSet<Book> set=new HashSet<Book>();  
+    //Creating Books  
+    Book b1=new Book(101,"Let us C","Yashwant Kanetkar","BPB",8);  
+    Book b2=new Book(102,"Data Communications & Networking","Forouzan","Mc Graw Hill",4);  
+    Book b3=new Book(103,"Operating System","Galvin","Wiley",6);  
+    //Adding Books to HashSet  
+    set.add(b1);  
+    set.add(b2);  
+    set.add(b3);  
+    //Traversing HashSet  
+    for(Book b:set){  
+    System.out.println(b.id+" "+b.name+" "+b.author+" "+b.publisher+" "+b.quantity);  
+    }  
+}  
+}  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java LinkedHashSet Example: Book
+import java.util.*;  
+class Book {  
+int id;  
+String name,author,publisher;  
+int quantity;  
+public Book(int id, String name, String author, String publisher, int quantity) {  
+    this.id = id;  
+    this.name = name;  
+    this.author = author;  
+    this.publisher = publisher;  
+    this.quantity = quantity;  
+}  
+}  
+ class LinkedHashSetExample {  
+public static void main(String[] args) {  
+    LinkedHashSet<Book> hs=new LinkedHashSet<Book>();  
+    //Creating Books  
+    Book b1=new Book(101,"Let us C","Yashwant Kanetkar","BPB",8);  
+    Book b2=new Book(102,"Data Communications & Networking","Forouzan","Mc Graw Hill",4);  
+    Book b3=new Book(103,"Operating System","Galvin","Wiley",6);  
+    //Adding Books to hash table  
+    hs.add(b1);  
+    hs.add(b2);  
+    hs.add(b3);  
+    //Traversing hash table  
+    for(Book b:hs){  
+    System.out.println(b.id+" "+b.name+" "+b.author+" "+b.publisher+" "+b.quantity);  
+    }  
+}  
+} 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java TreeSet Example: Book
+import java.util.*;    
+class Book implements Comparable<Book>{    
+int id;    
+String name,author,publisher;    
+int quantity;    
+public Book(int id, String name, String author, String publisher, int quantity) {    
+    this.id = id;    
+    this.name = name;    
+    this.author = author;    
+    this.publisher = publisher;    
+    this.quantity = quantity;    
+}    
+// implementing the abstract method  
+public int compareTo(Book b) {    
+    if(id>b.id){    
+        return 1;    
+    }else if(id<b.id){    
+        return -1;    
+    }else{    
+    return 0;    
+    }    
+}    
+}    
+public class TreeSetExample {    
+public static void main(String[] args) {    
+    Set<Book> set=new TreeSet<Book>();    
+    //Creating Books    
+    Book b1=new Book(121,"Let us C","Yashwant Kanetkar","BPB",8);    
+    Book b2=new Book(233,"Operating System","Galvin","Wiley",6);    
+    Book b3=new Book(101,"Data Communications & Networking","Forouzan","Mc Graw Hill",4);    
+    //Adding Books to TreeSet    
+    set.add(b1);    
+    set.add(b2);    
+    set.add(b3);    
+    //Traversing TreeSet    
+    for(Book b:set){    
+    System.out.println(b.id+" "+b.name+" "+b.author+" "+b.publisher+" "+b.quantity);    
+    }    
+}    
+}    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Java HashMap Example: Book
+import java.util.*;    
+class Book {    
+int id;    
+String name,author,publisher;    
+int quantity;    
+public Book(int id, String name, String author, String publisher, int quantity) {    
+    this.id = id;    
+    this.name = name;    
+    this.author = author;    
+    this.publisher = publisher;    
+    this.quantity = quantity;    
+}    
+}    
+ class MapExample {    
+public static void main(String[] args) {    
+    //Creating map of Books    
+    Map<Integer,Book> map=new HashMap<Integer,Book>();    
+    //Creating Books    
+    Book b1=new Book(101,"Let us C","Yashwant Kanetkar","BPB",8);    
+    Book b2=new Book(102,"Data Communications & Networking","Forouzan","Mc Graw Hill",4);    
+    Book b3=new Book(103,"Operating System","Galvin","Wiley",6);    
+    //Adding Books to map   
+    map.put(1,b1);  
+    map.put(2,b2);  
+    map.put(3,b3);  
+      
+    //Traversing map  
+    for(Map.Entry<Integer, Book> entry:map.entrySet()){    
+        int key=entry.getKey();  
+        Book b=entry.getValue();  
+        System.out.println(key+" Details:");  
+        System.out.println(b.id+" "+b.name+" "+b.author+" "+b.publisher+" "+b.quantity);   
+    }    
+}    
+}    
+
+
+
